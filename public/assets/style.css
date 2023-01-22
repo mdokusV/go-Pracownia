@@ -1,0 +1,41 @@
+*, 
+*::before, 
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+    background-color:lightcyan;
+}
+
+
+table, tr, td, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 1rem;
+    margin: 2rem;
+}
+
+.nav {
+    display: flex;
+    padding: 2rem;
+}
+
+.button {
+    margin: 1rem;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    margin: 5rem;
+    width: 50%;
+}
+

@@ -7,10 +7,14 @@ import (
 
 func init() {
 	initializers.LoadEnvVariables()
-	initializers.ConnectToSQLite()
+	initializers.ConnectToMySQL()
 }
 
 func main() {
 	// Migrate the schema
-	initializers.DB.AutoMigrate(&models.Post{})
+
+	//DropTable
+	initializers.DB.Migrator().DropTable(&models.Role{}, &models.User{})
+	initializers.DB.AutoMigrate(&models.User{}, &models.Role{})
+	initializers.DB.Exec("ALTER TABLE users ADD FOREIGN KEY (role_id) REFERENCES roles(id) ON UPDATE CASCADE ON DELETE CASCADE;")
 }

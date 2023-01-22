@@ -1,0 +1,23 @@
+1. (na ocenę 3) Moduł użytkowników 
+zarządzanie użytkownikami (dodawanie usuwanie (za pomocą znacznika isDeleted), edycja, listowanie bez stronicowania)
+
+
+
+2. (na ocenę 4) Rozbudowany moduł użytkowników :
+listowanie użytkowników ze stronicowaniem (serwer powinien stronicować nie klient)
+logowanie/rejestracja poprzez tokeny/ew autoryzacja przy każdym zapytaniu 
+role uprawnienia (admin, moderator, zwykły użytkownik) - widoki zależne od roli
+w edycji możliwość zmiany roli (może robić tylko administrator)
+Przetestowanie REST API za pomocą POSTMAN'a
+będąc adminem mogę usuwać użytkowników
+
+
+Co zawierać mają tabele:
+users - Użytkownik
+id
+name - imię 
+surname - nazwisko
+dateOfBirth data urodzenia
+login - email
+id roli (na ocenę 4 jeśli robimy role)
+isDeleted - znacznik czy usunięty
