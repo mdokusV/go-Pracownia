@@ -23,6 +23,12 @@ table, tr, td, th {
     margin: 2rem;
 }
 
+table {
+    min-width: 50rem;
+
+}
+
+
 .nav {
     display: flex;
     padding: 2rem;
@@ -38,4 +44,16 @@ table, tr, td, th {
     margin: 5rem;
     width: 50%;
 }
+
+
+.container {
+    margin: 5rem;
+    padding: 5rem;
+    width: 60rem;
+    background-color: #ddd;
+}
+
+
+
+
 

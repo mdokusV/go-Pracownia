@@ -1,0 +1,51 @@
+/UserShowAll
+
+
+status 409
+{
+    "Number": 1062,
+    "SQLState": [
+        50,
+        51,
+        48,
+        48,
+        48
+    ],
+    "Message": "Duplicate entry 'Admin@XD.com' for key 'login'"
+}
+/models/usersModel.go#L9
+Wszytko co w "" co nie zostanie spełnione wywoła błąd
+
+
+
+status 400
+[
+    {
+        "FailedField": "Name",
+        "Tag": "min",
+        "Value": "Key: 'Name' Error:Field validation for 'Name' failed on the 'min' tag"
+    },
+    {
+        "FailedField": "Login",
+        "Tag": "email",
+        "Value": "Key: 'Login' Error:Field validation for 'Login' failed on the 'email' tag"
+    }
+]
+controllers/usersController.go#L15
+Wszytko co w "" co nie zostanie spełnione wywoła błąd
+
+
+
+status 200
+{
+    "ID": 35,
+    "CreatedAt": "2023-01-22T15:59:35.738+01:00",
+    "UpdatedAt": "2023-01-22T15:59:35.738+01:00",
+    "DeletedAt": null,
+    "Name": "Mateusz",
+    "DateOfBirth": "2002-12-03",
+    "Surname": "Dokowicz",
+    "Login": "asdas@XD.com",
+    "Password": "Password",
+    "RoleID": 1
+}

@@ -1,0 +1,23 @@
+{
+	"Name":        "Admin",
+	"Surname":     "Admin",
+	"DateOfBirth": "2002-11-30",
+	"Login":       "Admin@gmail.com",
+	"Password":    "Password"
+}
+
+{
+    "Name":        "Moderator",
+    "Surname":     "Moderator",
+    "DateOfBirth": "2002-11-30",
+    "Login":       "Moderator@gmail.com",
+    "Password":    "Password"
+}
+
+{
+    "Name":        "User",
+    "Surname":     "User",
+    "DateOfBirth": "2002-11-30",
+    "Login":       "User@gmail.com",
+    "Password":    "Password"
+}

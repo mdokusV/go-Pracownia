@@ -1,0 +1,25 @@
+{
+  "name": "go-pracownia",
+  "version": "1.0.0",
+  "description": "app",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdokusV/go-Pracownia.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mdokusV/go-Pracownia/issues"
+  },
+  "homepage": "https://github.com/mdokusV/go-Pracownia#readme",
+  "dependencies": {
+    "bootstrap": "^5.2.3"
+  }
+}

@@ -1,0 +1,30 @@
+HTML/CSS/JS signUp, signIn, mainpage - admin / mod / user - view  
+
+mainpage: 
+all : listowanie użytkowników ze stronicowaniem (serwer powinien stronicować nie klient)
+admin : możliwość zmiany roli, widzi wszytko, może usunąć
+mod : widzi wszytko poza hasłem, może usunąć
+user: widzi imię, nazwisko
+
+global: 
+logowanie/rejestracja/edytowanie/wyświetlanie poprzez tokeny
+
+signUp:
+		Name        
+		Surname     
+		DateOfBirth "YYYY-MM-DD"
+		Login       
+		Password 
+
+singIN:
+		
+	ID
+	CreatedAt 
+	UpdatedAt 
+	DeletedAt
+	Name        
+	DateOfBirth 
+	Surname     
+	Login       
+	Password    
+	RoleID
