@@ -4,9 +4,11 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/template/html"
 	"github.com/mdokusV/go-Pracownia/controllers"
 	"github.com/mdokusV/go-Pracownia/initializers"
+	"github.com/mdokusV/go-Pracownia/middleware"
 )
 
 func init() {
@@ -22,13 +24,22 @@ func main() {
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
+	app.Use(logger.New())
 
 	// Config app
 	app.Static("/", "./public")
 
-	app.Post("/userAdd", controllers.UserCreate)
-	app.Get("/ShowAllUsers", controllers.UserShowAll)
+	// app.Get("/MainPage", controllers.MainPageSend)
 
-	app.Get("/", controllers.SendWeb)
+	app.Get("/login", controllers.SendLoginPage)
+	app.Post("/login", controllers.UserLogin)
+	app.Post("/logout", controllers.UserLogout)
+
+	app.Get("/register", controllers.SendRegisterPage)
+	app.Post("/register", controllers.UserCreate)
+	app.Get("/UserShowAll", middleware.CheckAuthCookie, controllers.UserShowAll)
+	app.Get("/UserShow", middleware.CheckAuthCookie, controllers.UserShow)
+
+	app.Get("/", middleware.CheckAuthCookie, controllers.SendMainWeb)
 	app.Listen(":" + os.Getenv("PORT")) // listen and serve on 0.0.0.0:3000
 }

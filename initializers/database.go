@@ -12,7 +12,7 @@ var DB *gorm.DB
 func ConnectToMySQL() {
 	var err error
 
-	dsn := os.Getenv("DBcredentials")
+	dsn := os.Getenv("DBCREDENTIALS")
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect to database")

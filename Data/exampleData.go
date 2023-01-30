@@ -1,9 +1,6 @@
 package main
 
 import (
-	//"fmt"
-	//"math/rand"
-
 	"fmt"
 	"math/rand"
 	"time"
@@ -41,7 +38,6 @@ func main() {
 }
 
 func generateEmail(domains []string) string {
-	rand.Seed(time.Now().UnixNano())
 
 	var username string
 	for i := 0; i < 8; i++ {
@@ -57,15 +53,17 @@ func generateEmail(domains []string) string {
 }
 
 func generateDateOfBirth() string {
-	rand.Seed(time.Now().UnixNano())
+	// Define the start and end date
+	start := time.Date(1920, 1, 1, 0, 0, 0, 0, time.UTC)
+	end := time.Date(2000, 12, 31, 0, 0, 0, 0, time.UTC)
 
-	day := rand.Intn(31) + 1
-	month := rand.Intn(12) + 1
-	year := rand.Intn(120) + 1901
+	// Generate a random duration between start and end
+	diff := end.Sub(start)
+	randDuration := time.Duration(rand.Int63n(int64(diff)))
 
-	date := fmt.Sprintf("%02d/%02d/%04d", day, month, year)
-
-	return date
+	// Add the random duration to the start date to get a random date of birth
+	dateOfBirth := start.Add(randDuration)
+	return dateOfBirth.Format("2006-01-02")
 }
 
 func generatePassword(passwordLength int) string {
