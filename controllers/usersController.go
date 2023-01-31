@@ -12,7 +12,6 @@ import (
 	"github.com/mdokusV/go-Pracownia/initializers"
 	"github.com/mdokusV/go-Pracownia/models"
 	"golang.org/x/crypto/bcrypt"
-	"gorm.io/gorm"
 )
 
 const CLUSTER_SIZE = 10
@@ -110,19 +109,27 @@ func UserShow(c *fiber.Ctx) error {
 		firstUserToFind := (body.PageNumber - 1) * CLUSTER_SIZE
 		var maxCount int64
 		initializers.DB.Model(&models.User{}).Count(&maxCount)
-		// initializers.DB.Model(&models.User{}).Count(&maxCount)
 		if maxCount < int64(firstUserToFind) {
 			return c.SendStatus(fiber.StatusRequestedRangeNotSatisfiable)
 		}
 
-		// Find Users
-		var users []models.User
-		err := initializers.DB.Limit(CLUSTER_SIZE).Offset(firstUserToFind).Find(&users).Error
-		if len(users) == 0 {
-			return c.SendStatus(fiber.StatusRequestedRangeNotSatisfiable)
+		//Find those users
+		type UserRole struct {
+			Name        string
+			Surname     string
+			DateOfBirth string
+			RoleName    string
 		}
+		var userRole []UserRole
+		err := initializers.DB.
+			Limit(CLUSTER_SIZE).
+			Offset(firstUserToFind).
+			Table("users").
+			Select("users.Name", "users.Surname", "users.date_of_birth", "roles.Name as RoleName").
+			Joins("left join roles on users.role_ID = roles.role_ID").
+			Find(&userRole).Error
 		if err != nil {
-			return c.SendStatus(fiber.StatusRequestedRangeNotSatisfiable)
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
 		}
 
 		// Prepare response JSON
@@ -137,19 +144,13 @@ func UserShow(c *fiber.Ctx) error {
 
 		// Fill data into JSON
 		startingOrderNumber := firstUserToFind + 1
-		for _, user := range users {
-			var role models.Role
-			err := initializers.DB.Where(&models.Role{RoleID: user.RoleID}).Find(&role).Error //Find role with ID
-			if err != nil {
-				fmt.Println(err)
-				return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
-			}
+		for _, user := range userRole {
 			newUser := sendJson{
 				OrderNumber: startingOrderNumber,
 				Name:        user.Name,
 				Surname:     user.Surname,
-				DateOfBirth: user.DateOfBirth,
-				RoleName:    role.Name,
+				DateOfBirth: user.DateOfBirth[:10],
+				RoleName:    user.RoleName,
 			}
 			startingOrderNumber++
 			sendJsons = append(sendJsons, newUser)
@@ -167,14 +168,26 @@ func UserShow(c *fiber.Ctx) error {
 			return c.SendStatus(fiber.StatusRequestedRangeNotSatisfiable)
 		}
 
-		// Find Users
-		var users []models.User
-		err := initializers.DB.Limit(CLUSTER_SIZE).Offset(firstUserToFind).Find(&users).Error
-		if len(users) == 0 {
-			return c.SendStatus(fiber.StatusRequestedRangeNotSatisfiable)
+		//Find those users
+		type UserRole struct {
+			Name        string
+			Surname     string
+			DateOfBirth string
+			RoleName    string
+			Login       string
+			CreatedAt   time.Time
+			UpdatedAt   time.Time
 		}
+		var userRole []UserRole
+		err := initializers.DB.
+			Limit(CLUSTER_SIZE).
+			Offset(firstUserToFind).
+			Table("users").
+			Select("users.Name", "users.Surname", "users.date_of_birth", "roles.Name as RoleName", "users.Login", "users.Created_At", "users.Updated_At").
+			Joins("left join roles on users.role_ID = roles.role_ID").
+			Find(&userRole).Error
 		if err != nil {
-			return c.SendStatus(fiber.StatusRequestedRangeNotSatisfiable)
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
 		}
 
 		// Prepare response JSON
@@ -192,19 +205,13 @@ func UserShow(c *fiber.Ctx) error {
 
 		// Fill data into JSON
 		startingOrderNumber := firstUserToFind + 1
-		for _, user := range users {
-			var role models.Role
-			err := initializers.DB.Where(&models.Role{RoleID: user.RoleID}).Find(&role).Error //Find role with ID
-			if err != nil {
-				fmt.Println(err)
-				return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
-			}
+		for _, user := range userRole {
 			newUser := sendJson{
 				OrderNumber: startingOrderNumber,
 				Name:        user.Name,
 				Surname:     user.Surname,
-				DateOfBirth: user.DateOfBirth,
-				RoleName:    role.Name,
+				DateOfBirth: user.DateOfBirth[:10],
+				RoleName:    user.RoleName,
 				Login:       user.Login,
 				CreatedAt:   user.CreatedAt,
 				UpdatedAt:   user.UpdatedAt,
@@ -225,9 +232,30 @@ func UserShow(c *fiber.Ctx) error {
 			return c.SendStatus(fiber.StatusRequestedRangeNotSatisfiable)
 		}
 
-		// Find Users
-		var users []models.User
-		initializers.DB.Limit(CLUSTER_SIZE).Unscoped().Offset(firstUserToFind).Find(&users)
+		//Find those users
+		type UserRole struct {
+			Name        string
+			Surname     string
+			DateOfBirth string
+			RoleName    string
+			Login       string
+			Password    string
+			ID          uint
+			CreatedAt   time.Time
+			UpdatedAt   time.Time
+			DeletedAt   time.Time
+		}
+		var userRole []UserRole
+		err := initializers.DB.
+			Limit(CLUSTER_SIZE).
+			Offset(firstUserToFind).
+			Table("users").
+			Select("users.Name", "users.Surname", "users.date_of_birth", "roles.Name as RoleName", "users.Login", "users.Password", "users.Created_At", "users.Updated_At", "users.Deleted_At", "users.ID").
+			Joins("left join roles on users.role_ID = roles.role_ID").
+			Find(&userRole).Error
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
+		}
 
 		// Prepare response JSON
 		type sendJson struct {
@@ -238,28 +266,29 @@ func UserShow(c *fiber.Ctx) error {
 			RoleName    string
 			Login       string
 			Password    string
-			gorm.Model
+			ID          uint
+			CreatedAt   time.Time
+			UpdatedAt   time.Time
+			DeletedAt   time.Time
 		}
 		var sendJsons []sendJson
 
 		// Fill data into JSON
 		startingOrderNumber := firstUserToFind + 1
-		for _, user := range users {
-			var role models.Role
-			err := initializers.DB.Where(&models.Role{RoleID: user.RoleID}).Find(&role).Error //Find role with ID
-			if err != nil {
-				fmt.Println(err)
-				return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
-			}
+		for _, user := range userRole {
+
 			newUser := sendJson{
 				OrderNumber: startingOrderNumber,
 				Name:        user.Name,
 				Surname:     user.Surname,
-				DateOfBirth: user.DateOfBirth,
-				RoleName:    role.Name,
+				DateOfBirth: user.DateOfBirth[:10],
+				RoleName:    user.RoleName,
 				Login:       user.Login,
 				Password:    user.Password,
-				Model:       user.Model,
+				ID:          user.ID,
+				CreatedAt:   user.CreatedAt,
+				UpdatedAt:   user.UpdatedAt,
+				DeletedAt:   user.DeletedAt,
 			}
 			startingOrderNumber++
 			sendJsons = append(sendJsons, newUser)
@@ -408,7 +437,6 @@ func UserLogin(c *fiber.Ctx) error {
 
 func UserLogout(c *fiber.Ctx) error {
 	c.ClearCookie("Authorization")
-	fmt.Println("XDDD")
 	return c.Redirect("/login", fiber.StatusMovedPermanently)
 }
 
