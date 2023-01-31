@@ -28,3 +28,9 @@ singIN:
 	Login       
 	Password    
 	RoleID
+
+
+
+max ilosc page (10 - 1, 20 - 2)
+LP wysylac
+

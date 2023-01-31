@@ -7,7 +7,6 @@ import (
 
 	"github.com/mdokusV/go-Pracownia/initializers"
 	"github.com/mdokusV/go-Pracownia/models"
-	"gorm.io/gorm"
 )
 
 func init() {
@@ -95,10 +94,8 @@ func createUser(name, surname, dateOfBirth, login, password string, roleID int) 
 
 func createRole(name string, number uint) {
 	var Role = models.Role{
-		Name: name,
-		Model: gorm.Model{
-			ID: number,
-		},
+		Name:   name,
+		RoleID: number,
 	}
 
 	var result = initializers.DB.Create(&Role)

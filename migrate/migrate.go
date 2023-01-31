@@ -16,5 +16,5 @@ func main() {
 	//DropTable
 	initializers.DB.Migrator().DropTable(&models.Role{}, &models.User{})
 	initializers.DB.AutoMigrate(&models.User{}, &models.Role{})
-	initializers.DB.Exec("ALTER TABLE users ADD FOREIGN KEY (role_id) REFERENCES roles(id) ON UPDATE CASCADE ON DELETE CASCADE;")
+	initializers.DB.Exec("ALTER TABLE users ADD FOREIGN KEY (role_id) REFERENCES roles(role_id) ON UPDATE CASCADE ON DELETE CASCADE;")
 }

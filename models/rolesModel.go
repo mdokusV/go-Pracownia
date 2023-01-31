@@ -6,5 +6,6 @@ import (
 
 type Role struct {
 	gorm.Model
-	Name string `gorm:"not null; size:128; unique"`
+	RoleID uint   `gorm:"not null; size:128; unique"`
+	Name   string `gorm:"not null; size:128; unique"`
 }

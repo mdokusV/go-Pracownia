@@ -37,9 +37,15 @@ func main() {
 
 	app.Get("/register", controllers.SendRegisterPage)
 	app.Post("/register", controllers.UserCreate)
+
 	app.Get("/UserShowAll", middleware.CheckAuthCookie, controllers.UserShowAll)
-	app.Get("/UserShow", middleware.CheckAuthCookie, controllers.UserShow)
+	app.Post("/UserShow", middleware.CheckAuthCookie, controllers.UserShow)
+	app.Get("/maxPages", middleware.CheckAuthCookie, controllers.MaxPages)
+	app.Post("/changeUserRole", middleware.CheckAuthCookie, controllers.UserChangeRole)
+
+	app.Delete("/UserDelete", middleware.CheckAuthCookie, controllers.UserDelete)
 
 	app.Get("/", middleware.CheckAuthCookie, controllers.SendMainWeb)
+
 	app.Listen(":" + os.Getenv("PORT")) // listen and serve on 0.0.0.0:3000
 }
